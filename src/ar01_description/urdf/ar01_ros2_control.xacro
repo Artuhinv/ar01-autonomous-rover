@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+    Reserved for the ros2_control contract after description step 15.
+    This file is intentionally inactive in the geometry-only milestone.
+  -->
+</robot>

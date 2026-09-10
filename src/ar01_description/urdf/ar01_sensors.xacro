@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="ar01_sensors">
+    <!-- Geometry placeholders only; sensor plugins are a later P0 step. -->
+    <xacro:property name="lidar_radius" value="0.035"/>
+    <xacro:property name="lidar_height" value="0.040"/>
+    <xacro:property name="lidar_mass" value="0.100"/>
+
+    <xacro:property name="imu_length" value="0.040"/>
+    <xacro:property name="imu_width" value="0.030"/>
+    <xacro:property name="imu_height" value="0.015"/>
+    <xacro:property name="imu_mass" value="0.020"/>
+
+    <material name="sensor_blue">
+      <color rgba="0.12 0.35 0.75 1.0"/>
+    </material>
+    <material name="sensor_orange">
+      <color rgba="0.95 0.45 0.08 1.0"/>
+    </material>
+
+    <link name="lidar_link">
+      <visual>
+        <geometry>
+          <cylinder radius="${lidar_radius}" length="${lidar_height}"/>
+        </geometry>
+        <material name="sensor_blue"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${lidar_radius}" length="${lidar_height}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${lidar_mass}"/>
+        <!-- Solid cylinder with its rotation axis along Z. -->
+        <inertia
+          ixx="${lidar_mass / 12.0 * (3.0 * lidar_radius * lidar_radius + lidar_height * lidar_height)}"
+          ixy="0.0"
+          ixz="0.0"
+          iyy="${lidar_mass / 12.0 * (3.0 * lidar_radius * lidar_radius + lidar_height * lidar_height)}"
+          iyz="0.0"
+          izz="${lidar_mass / 2.0 * lidar_radius * lidar_radius}"/>
+      </inertial>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="lidar_link"/>
+      <origin xyz="0.070 0 0.075" rpy="0 0 0"/>
+    </joint>
+
+    <link name="imu_link">
+      <visual>
+        <geometry>
+          <box size="${imu_length} ${imu_width} ${imu_height}"/>
+        </geometry>
+        <material name="sensor_orange"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${imu_length} ${imu_width} ${imu_height}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${imu_mass}"/>
+        <!-- Solid box inertia about its centre. -->
+        <inertia
+          ixx="${imu_mass / 12.0 * (imu_width * imu_width + imu_height * imu_height)}"
+          ixy="0.0"
+          ixz="0.0"
+          iyy="${imu_mass / 12.0 * (imu_length * imu_length + imu_height * imu_height)}"
+          iyz="0.0"
+          izz="${imu_mass / 12.0 * (imu_length * imu_length + imu_width * imu_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="imu_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+</robot>

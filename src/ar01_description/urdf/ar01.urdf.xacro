@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ar01">
+  <!--
+    AR-01 design baseline v0.1
+
+    Units: metres, kilograms, radians.
+    REP-103 axes: +X forward, +Y left, +Z up.
+
+    ros2_control and simulated sensor plugins are intentionally not included at
+    this stage. This file defines only geometry, kinematics, and rigid-body data.
+  -->
+
+  <xacro:include filename="ar01_base.xacro"/>
+  <xacro:include filename="ar01_sensors.xacro"/>
+
+  <xacro:ar01_base/>
+  <xacro:ar01_sensors/>
+</robot>

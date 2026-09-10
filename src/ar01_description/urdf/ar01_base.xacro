@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="ar01_base">
+    <!-- Mechanical contract: chassis 320 x 280 x 100 mm. -->
+    <xacro:property name="body_length" value="0.320"/>
+    <xacro:property name="body_width" value="0.280"/>
+    <xacro:property name="body_height" value="0.100"/>
+    <xacro:property name="body_mass" value="2.530"/>
+
+    <!--
+      Wheel centres are 310 mm apart: 280 mm body + 25 mm wheel +
+      2 x 2.5 mm clearance.
+    -->
+    <xacro:property name="wheel_radius" value="0.050"/>
+    <xacro:property name="wheel_width" value="0.025"/>
+    <xacro:property name="wheel_clearance" value="0.0025"/>
+    <xacro:property
+      name="wheel_track"
+      value="${body_width + wheel_width + 2.0 * wheel_clearance}"/>
+    <xacro:property name="wheel_mass" value="0.150"/>
+
+    <xacro:property name="caster_radius" value="0.025"/>
+    <xacro:property name="caster_mass" value="0.050"/>
+
+    <!-- Component masses add up to the 3.000 kg P0 baseline. -->
+
+    <material name="body_gray">
+      <color rgba="0.32 0.36 0.40 1.0"/>
+    </material>
+    <material name="wheel_black">
+      <color rgba="0.05 0.05 0.05 1.0"/>
+    </material>
+
+    <!-- Virtual ground projection: deliberately has no geometry or inertia. -->
+    <link name="base_footprint"/>
+
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <box size="${body_length} ${body_width} ${body_height}"/>
+        </geometry>
+        <material name="body_gray"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${body_length} ${body_width} ${body_height}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${body_mass}"/>
+        <!-- Solid box inertia about its centre. -->
+        <inertia
+          ixx="${body_mass / 12.0 * (body_width * body_width + body_height * body_height)}"
+          ixy="0.0"
+          ixz="0.0"
+          iyy="${body_mass / 12.0 * (body_length * body_length + body_height * body_height)}"
+          iyz="0.0"
+          izz="${body_mass / 12.0 * (body_length * body_length + body_width * body_width)}"/>
+      </inertial>
+    </link>
+
+    <!-- base_link is at chassis centre; wheel centres are 50 mm above floor. -->
+    <joint name="base_footprint_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0 0 0.100" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:macro name="wheel" params="side y">
+      <link name="${side}_wheel_link">
+        <visual>
+          <!-- A URDF cylinder is Z-aligned; rotate its axis onto Y. -->
+          <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
+          <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+          </geometry>
+          <material name="wheel_black"/>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
+          <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+          </geometry>
+        </collision>
+        <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <mass value="${wheel_mass}"/>
+          <!-- Solid cylinder with its rotation axis along Y. -->
+          <inertia
+            ixx="${wheel_mass / 12.0 * (3.0 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"
+            ixy="0.0"
+            ixz="0.0"
+            iyy="${wheel_mass / 2.0 * wheel_radius * wheel_radius}"
+            iyz="0.0"
+            izz="${wheel_mass / 12.0 * (3.0 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"/>
+        </inertial>
+      </link>
+
+      <joint name="${side}_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="${side}_wheel_link"/>
+        <origin xyz="0 ${y} -0.050" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <dynamics damping="0.1" friction="0.0"/>
+      </joint>
+    </xacro:macro>
+
+    <!-- ROS convention: left is +Y and right is -Y. -->
+    <xacro:wheel side="left" y="${wheel_track / 2.0}"/>
+    <xacro:wheel side="right" y="${-wheel_track / 2.0}"/>
+
+    <link name="caster_link">
+      <visual>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+        <material name="wheel_black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${caster_mass}"/>
+        <!-- Solid sphere inertia about its centre. -->
+        <inertia
+          ixx="${2.0 / 5.0 * caster_mass * caster_radius * caster_radius}"
+          ixy="0.0"
+          ixz="0.0"
+          iyy="${2.0 / 5.0 * caster_mass * caster_radius * caster_radius}"
+          iyz="0.0"
+          izz="${2.0 / 5.0 * caster_mass * caster_radius * caster_radius}"/>
+      </inertial>
+    </link>
+
+    <joint name="caster_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_link"/>
+      <origin xyz="-0.120 0 -0.075" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+</robot>
