@@ -17,5 +17,9 @@ setup(
     maintainer_email='vitalik.artuhin@gmail.com',
     description='Diagnostic and command-line tools for the AR-01 rover.',
     license='Proprietary',
-    entry_points={'console_scripts': []},
+    entry_points={
+        'console_scripts': [
+            'cmd_test = ar01_tools.cmd_test:main',
+        ],
+    },
 )

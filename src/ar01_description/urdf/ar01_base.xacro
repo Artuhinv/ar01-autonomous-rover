@@ -36,18 +36,21 @@
 
     <link name="base_link">
       <visual>
+        <origin xyz="-0.025 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="${body_length} ${body_width} ${body_height}"/>
         </geometry>
         <material name="body_gray"/>
       </visual>
       <collision>
+        <origin xyz="-0.025 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="${body_length} ${body_width} ${body_height}"/>
         </geometry>
       </collision>
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <!-- The drive axle is 25 mm forward of the chassis centre. -->
+        <origin xyz="-0.025 0 0" rpy="0 0 0"/>
         <mass value="${body_mass}"/>
         <!-- Solid box inertia about its centre. -->
         <inertia
@@ -60,7 +63,7 @@
       </inertial>
     </link>
 
-    <!-- base_link is at chassis centre; wheel centres are 50 mm above floor. -->
+    <!-- base_link is at the drive axle; wheel centres are 50 mm above floor. -->
     <joint name="base_footprint_joint" type="fixed">
       <parent link="base_footprint"/>
       <child link="base_link"/>
@@ -102,6 +105,7 @@
         <child link="${side}_wheel_link"/>
         <origin xyz="0 ${y} -0.050" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
+        <limit effort="20.0" velocity="20.0"/>
         <dynamics damping="0.1" friction="0.0"/>
       </joint>
     </xacro:macro>
@@ -141,5 +145,19 @@
       <child link="caster_link"/>
       <origin xyz="-0.120 0 -0.075" rpy="0 0 0"/>
     </joint>
+
+    <!-- Contact parameters for the future Gazebo rigid-body simulation. -->
+    <gazebo reference="left_wheel_link">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="right_wheel_link">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+    <gazebo reference="caster_link">
+      <mu1>0.001</mu1>
+      <mu2>0.001</mu2>
+    </gazebo>
   </xacro:macro>
 </robot>

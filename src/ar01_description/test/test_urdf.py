@@ -17,9 +17,9 @@ PHYSICAL_LINKS = {
 }
 
 
-def robot_root():
+def robot_root(*xacro_args):
     result = subprocess.run(
-        ['xacro', str(XACRO_FILE)],
+        ['xacro', str(XACRO_FILE), *xacro_args],
         check=True,
         capture_output=True,
         text=True,
@@ -48,6 +48,7 @@ def test_expected_kinematic_tree_and_origins():
     }
     assert xyz(root, 'base_footprint_joint') == pytest.approx([0.0, 0.0, 0.100])
     assert xyz(root, 'lidar_joint') == pytest.approx([0.070, 0.0, 0.075])
+    assert xyz(root, 'imu_joint') == pytest.approx([-0.025, 0.0, 0.0])
     assert xyz(root, 'left_wheel_joint') == pytest.approx([0.0, 0.155, -0.050])
     assert xyz(root, 'right_wheel_joint') == pytest.approx([0.0, -0.155, -0.050])
 
@@ -76,3 +77,26 @@ def test_every_physical_link_has_valid_rigid_body_data():
         assert diagonal[1] + diagonal[2] >= diagonal[0]
 
     assert total_mass == pytest.approx(3.000)
+
+
+def test_simulation_exports_two_velocity_controlled_wheel_joints():
+    root = robot_root('use_sim:=true', 'controller_config:=/tmp/controllers.yaml')
+    control = root.find("ros2_control[@name='GazeboSimSystem']")
+    assert control is not None
+    assert control.findtext('hardware/plugin') == 'gz_ros2_control/GazeboSimSystem'
+
+    joints = {joint.attrib['name']: joint for joint in control.findall('joint')}
+    assert set(joints) == {'left_wheel_joint', 'right_wheel_joint'}
+    for joint in joints.values():
+        assert [item.attrib['name'] for item in joint.findall('command_interface')] == [
+            'velocity'
+        ]
+        assert [item.attrib['name'] for item in joint.findall('state_interface')] == [
+            'position',
+            'velocity',
+        ]
+
+    plugin = root.find('gazebo/plugin')
+    assert plugin.attrib['filename'] == 'libgz_ros2_control-system.so'
+    assert plugin.attrib['name'] == 'gz_ros2_control::GazeboSimROS2ControlPlugin'
+    assert plugin.findtext('parameters') == '/tmp/controllers.yaml'
