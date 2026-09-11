@@ -18,7 +18,7 @@
   <xacro:arg name="controller_config" default=""/>
 
   <xacro:ar01_base/>
-  <xacro:ar01_sensors/>
+  <xacro:ar01_sensors use_sim="$(arg use_sim)"/>
 
   <xacro:if value="$(arg use_sim)">
     <xacro:ar01_ros2_control controller_config="$(arg controller_config)"/>

@@ -30,6 +30,10 @@ def test_p0_room_contains_floor_walls_and_obstacles():
         assert link.find('visual') is not None
         assert link.find('collision') is not None
 
+    plugins = {plugin.attrib['name'] for plugin in world.findall('plugin')}
+    assert 'gz::sim::systems::Sensors' in plugins
+    assert 'gz::sim::systems::Imu' in plugins
+
 
 def test_diff_drive_controller_matches_mechanical_contract():
     with (PACKAGE_DIR / 'config' / 'controllers.yaml').open() as config_file:
@@ -50,3 +54,17 @@ def test_diff_drive_controller_matches_mechanical_contract():
     assert drive['wheel_radius'] == pytest.approx(0.050)
     assert drive['position_feedback'] is True
     assert drive['open_loop'] is False
+
+
+def test_bridge_exports_clock_lidar_and_imu_topics():
+    with (PACKAGE_DIR / 'config' / 'bridge.yaml').open() as config_file:
+        config = yaml.safe_load(config_file)
+
+    bridges = {item['ros_topic_name']: item for item in config}
+    assert set(bridges) == {'/clock', '/scan', '/imu/data'}
+    assert bridges['/scan']['ros_type_name'] == 'sensor_msgs/msg/LaserScan'
+    assert bridges['/scan']['gz_type_name'] == 'gz.msgs.LaserScan'
+    assert bridges['/scan']['frame_id'] == 'lidar_link'
+    assert bridges['/imu/data']['ros_type_name'] == 'sensor_msgs/msg/Imu'
+    assert bridges['/imu/data']['gz_type_name'] == 'gz.msgs.IMU'
+    assert bridges['/imu/data']['frame_id'] == 'imu_link'

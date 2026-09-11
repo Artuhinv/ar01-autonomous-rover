@@ -100,3 +100,17 @@ def test_simulation_exports_two_velocity_controlled_wheel_joints():
     assert plugin.attrib['filename'] == 'libgz_ros2_control-system.so'
     assert plugin.attrib['name'] == 'gz_ros2_control::GazeboSimROS2ControlPlugin'
     assert plugin.findtext('parameters') == '/tmp/controllers.yaml'
+
+    lidar = root.find("gazebo[@reference='lidar_link']/sensor[@name='gpu_lidar']")
+    assert lidar is not None
+    assert lidar.attrib['type'] == 'gpu_lidar'
+    assert lidar.findtext('topic') == '/scan'
+    assert int(lidar.findtext('lidar/scan/horizontal/samples')) == 720
+    assert float(lidar.findtext('lidar/range/min')) == pytest.approx(0.10)
+    assert float(lidar.findtext('lidar/range/max')) == pytest.approx(12.0)
+
+    imu = root.find("gazebo[@reference='imu_link']/sensor[@name='imu_sensor']")
+    assert imu is not None
+    assert imu.attrib['type'] == 'imu'
+    assert imu.findtext('topic') == '/imu/data'
+    assert float(imu.findtext('update_rate')) == pytest.approx(100.0)

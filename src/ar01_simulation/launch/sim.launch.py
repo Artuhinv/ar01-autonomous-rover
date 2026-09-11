@@ -38,7 +38,8 @@ def launch_setup(context):
         value_type=str,
     )
 
-    gz_args = f'-r -v 3 {"-s " if headless else ""}{world}'
+    headless_args = '-s --headless-rendering ' if headless else ''
+    gz_args = f'-r -v 3 {headless_args}{world}'
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim_dir, 'launch', 'gz_sim.launch.py')
