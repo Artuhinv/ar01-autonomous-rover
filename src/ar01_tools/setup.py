@@ -12,6 +12,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
+    tests_require=['pytest'],
     zip_safe=True,
     maintainer='Artuhinv',
     maintainer_email='vitalik.artuhin@gmail.com',
@@ -20,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'cmd_test = ar01_tools.cmd_test:main',
+            'p0_diagnostics = ar01_tools.p0_diagnostics:main',
         ],
     },
 )
