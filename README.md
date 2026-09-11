@@ -14,6 +14,9 @@ P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 EKF, SLAM, Nav2, autonomous behavior and physical hardware are intentionally
 outside P0.
 
+For a new Ubuntu 24.04 computer, follow the complete
+[clean-machine setup guide](docs/SETUP.md) before using the commands below.
+
 ## Design baseline v0.1
 
 | Parameter | Value |
