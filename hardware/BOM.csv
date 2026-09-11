@@ -1,0 +1,5 @@
+category,description,manufacturer,model_or_sku,quantity,status,purchase_state,source,notes
+drivetrain,12V 70:1 37D gearmotor with quadrature encoder,Pololu,4754,2,selected P1.1 baseline,HOLD,https://www.pololu.com/product/4754,"150 RPM; 5.5 A stall; final release requires driver power and CAD checks"
+drivetrain,90x10mm silicone wheel pair,Pololu,1435,1 pair,mechanical candidate,HOLD,https://www.pololu.com/product/1435,"Candidate only; 100 mm remains the sizing baseline until traction and clearance are validated"
+drivetrain,universal aluminum hub pair for 6mm shaft with M3 holes,Pololu,1999,1 pair,paired wheel candidate,HOLD,https://www.pololu.com/product/1999,"Required only if wheel 1435 passes the mechanical review"
+drivetrain,machined aluminum bracket for 37D gearmotor,Pololu,1995,2,mount candidate,HOLD,https://www.pololu.com/product/1995,"Compare with a printed or custom chassis-integrated mount during CAD"

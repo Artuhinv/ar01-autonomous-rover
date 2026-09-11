@@ -1,6 +1,13 @@
 # AR-01 autonomous rover
 
-Current milestone: **P0 Digital AR-01 complete (steps 0-29)**.
+Frozen milestone: **P0 Digital AR-01 complete (steps 0-29)**.
+
+Current design work: **P1.1 physical requirements and drivetrain sizing**.
+See [P1 requirements](docs/P1_REQUIREMENTS.md),
+[drivetrain calculations](docs/P1_DRIVETRAIN.md), and the preliminary
+[hardware BOM](hardware/BOM.csv). Every P1.1 hardware row remains on purchase
+hold until the driver, power system, mounting geometry, and local availability
+are confirmed.
 
 P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 
