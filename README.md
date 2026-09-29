@@ -112,3 +112,22 @@ API dependency.
 
 The physical AR-01 should preserve this contract so higher-level ROS software
 can move from simulation to hardware without changing its command logic.
+
+## P1 physical design (no purchases yet)
+
+P1 is design work, not a change to the frozen P0 simulation. See
+[`docs/P1_REQUIREMENTS.md`](docs/P1_REQUIREMENTS.md) and
+[`docs/P1_DRIVETRAIN.md`](docs/P1_DRIVETRAIN.md) for the motor baseline;
+[`docs/P1_POWER.md`](docs/P1_POWER.md) for P1.2 current, driver and protection;
+[`docs/P1_CONTROL.md`](docs/P1_CONTROL.md) for the provisional P1.3 STM32 pin
+map and protocol; and [`docs/P1_MECHANICAL.md`](docs/P1_MECHANICAL.md) for the
+**open** P1.4 CAD gate. Every physical BOM row remains `HOLD`.
+
+On a machine with Python 3, P1 sizing is independent of ROS:
+
+```bash
+python3 hardware/calculations/drivetrain_sizing.py
+python3 hardware/calculations/power_sizing.py
+python3 -m unittest discover -s hardware/calculations -p 'test_*.py'
+python3 -m unittest discover -s hardware/protocol -p 'test_*.py'
+```
