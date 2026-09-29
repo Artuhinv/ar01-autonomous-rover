@@ -15,7 +15,8 @@ enum ar01_fault {
     AR01_BUS_UNDERVOLTAGE = 1u << 4,
     AR01_ENCODER_IMPLAUSIBLE = 1u << 5,
     AR01_COMMAND_TIMEOUT = 1u << 6,
-    AR01_WATCHDOG_RESET = 1u << 7
+    AR01_WATCHDOG_RESET = 1u << 7,
+    AR01_CONTROL_OVERRUN = 1u << 8
 };
 
 /* All thresholds and PI gains require physical bench measurement. Zero disables ARM. */

@@ -7,7 +7,11 @@ P1.2 driver are baselines; P1.3 portable C core passes host tests but lacks a
 flashable STM32 adapter; P1.4 wheel-size screening prefers a 100 mm design
 target but CAD is open; P1.5 staged sample/full-release rules are documented,
 with all purchases still on hold. See [P1 release status](docs/P1_RELEASE.md)
-and the [hardware BOM](hardware/BOM.csv).
+and the [hardware BOM](hardware/BOM.csv). The
+[NUCLEO board preflight](docs/P1_BOARD_PREFLIGHT.md) shows what is verified on
+paper and what still needs CubeMX and bench evidence.
+The [architecture decision register](docs/ARCHITECTURE_DECISIONS.md) separates
+stable safety/interface properties from revisable part and technology baselines.
 
 P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 

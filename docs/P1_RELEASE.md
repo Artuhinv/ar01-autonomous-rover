@@ -5,6 +5,19 @@ This resolves a circular gate: motor/driver/MCU bench measurements cannot exist
 until a small set of engineering samples exists. It does **not** approve a full
 robot build, battery, chassis or custom PCB.
 
+## Gate A evidence snapshot
+
+| Item | State | Evidence / missing work |
+| --- | --- | --- |
+| Host protocol/control/service | PASS on host only | C unit tests and C↔Python interoperability; see firmware README. |
+| Pin map | PAPER REVIEW | Board/VCP and Morpho mapping checked against ST UM2505; combined configuration must still pass CubeMX. |
+| CubeMX `.ioc` and complete STM32 ELF | OPEN | Official tool not installed; no generated startup, HAL port, linker or image. |
+| Connector schematic and reset-low PWM proof | OPEN | External pull-downs, direction sequence, signal conditioning and E-stop loop need review. |
+| Current-limited fixture and actual parts | OPEN | No fixture, samples or measurements recorded in the repository. |
+| Owner purchase decision | HOLD | No budget/seller/availability approval recorded. |
+
+**Gate A remains CLOSED.** See [board preflight](P1_BOARD_PREFLIGHT.md).
+
 ## Gate A — development samples only
 
 Candidate minimum set: two Pololu 4754 motors, one Pololu Dual VNH5019 #2507,
