@@ -1,8 +1,8 @@
 # P1.4 mechanical integration preflight (open)
 
-Status: **preflight only** (2026-09-29). This is not a chassis CAD or a purchase
-release. P0 URDF stays unchanged because its geometry is a simulation envelope,
-not a dimensioned production drawing.
+Status: **wheel-size screening complete; CAD open** (2026-09-29). This is not
+a chassis CAD or a purchase release. P0 URDF stays unchanged because its
+geometry is a simulation envelope, not a dimensioned production drawing.
 
 ## Known geometry and immediate checks
 
@@ -21,7 +21,40 @@ tolerances. It is not a clearance pass. With a 90 mm wheel, 0.60 m/s needs
 127.32 RPM, leaving only ~18% no-load speed headroom from the 150 RPM motor;
 validate loaded speed on the bench before fixing that wheel. The lower radius
 also changes axle height, caster geometry, ground clearance, odometry constants
-and stall/traction behavior. Do not copy P0's 100 mm radius into physical code.
+and stall/traction behavior. Do not copy P0's 100 mm diameter into physical code
+until a real wheel is selected.
+
+## P1.4A wheel-size screening decision
+
+The 90 mm candidate is **not the release baseline** for the simultaneous
+0.60 m/s, 4 kg, 5-degree slope and 0.50 m/s² acceleration sizing case. Using
+the same deliberately simple linear torque-speed model as P1.1, the 7.375 N
+tractive-force case gives:
+
+| Diameter | Required RPM | Working torque / motor | Torque available at speed | Available / (working × 2.5) |
+| --- | ---: | ---: | ---: | ---: |
+| 90 mm | 127.32 | 0.166 N m | 0.400 N m | **0.96** |
+| 100 mm | 114.59 | 0.184 N m | 0.625 N m | **1.36** |
+
+Thus retain **100 mm diameter as the mechanical design target**, not as an
+approved wheel part. This is a conservative screen, not a measured loaded-speed
+curve; validate it with real wheel, tire, voltage, surface and payload. Source
+inputs and equations are in `hardware/calculations/drivetrain_sizing.py` and
+the reproducible screen is `python3 hardware/calculations/wheel_screen.py`.
+The 90 mm part remains a bench alternative only if the measured duty case or
+speed requirement is explicitly revised; it should not silently replace the
+100 mm P0 sizing diameter. Find a sourceable 100 mm wheel, compatible 6 mm hub,
+and real width before freezing axle height, track or odometry.
+
+## P1.4B payload placement rule
+
+Reserve an adjustable low ballast / battery zone **between the axle and caster**
+so upper sensors can be counterbalanced after their masses and mounting heights
+are known. No ballast mass or center-of-gravity coordinate is asserted yet.
+Before CAD release, calculate the loaded center of mass for minimum/maximum
+payload and test its projection against the three-contact support triangle,
+including acceleration and slope cases. A static center point alone is not a
+tip-stability test.
 
 ## CAD completion gate
 

@@ -1,7 +1,9 @@
 # P1.2 motor driver and power architecture
 
 Status: **engineering baseline, not purchase release** (2026-09-29). P0 remains
-frozen. All physical parts stay `HOLD` until bench and mechanical gates pass.
+frozen. All physical parts currently stay `HOLD`; a limited development-sample
+release can precede bench measurements only under [Gate A](P1_RELEASE.md).
+Full robot parts remain gated on bench and mechanical evidence.
 
 ## Motor current envelope
 
@@ -106,7 +108,7 @@ terminals**. For 1 h required runtime, `nominal Wh >= P_system_average × 1 h ×
 `--system-average-w` to evaluate this only when data exists; its default 20%
 reserve and 80% usable fraction are illustrative, not battery approvals.
 
-## Gate before purchase / P2 wiring
+## Gate before full-robot purchase / P2 wiring
 
 - Select pack and BMS with documented full/empty voltage and peak-current curve.
 - Measure motor start, hard turn, stall trip time/current, and driver temperature.

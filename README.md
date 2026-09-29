@@ -2,12 +2,12 @@
 
 Frozen milestone: **P0 Digital AR-01 complete (steps 0-29)**.
 
-Current design work: **P1.1 physical requirements and drivetrain sizing**.
-See [P1 requirements](docs/P1_REQUIREMENTS.md),
-[drivetrain calculations](docs/P1_DRIVETRAIN.md), and the preliminary
-[hardware BOM](hardware/BOM.csv). Every P1.1 hardware row remains on purchase
-hold until the driver, power system, mounting geometry, and local availability
-are confirmed.
+Current design work: **P1 physical engineering, not yet P2**. P1.1 motor and
+P1.2 driver are baselines; P1.3 portable C core passes host tests but lacks a
+flashable STM32 adapter; P1.4 wheel-size screening prefers a 100 mm design
+target but CAD is open; P1.5 staged sample/full-release rules are documented,
+with all purchases still on hold. See [P1 release status](docs/P1_RELEASE.md)
+and the [hardware BOM](hardware/BOM.csv).
 
 P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 
@@ -120,8 +120,10 @@ P1 is design work, not a change to the frozen P0 simulation. See
 [`docs/P1_DRIVETRAIN.md`](docs/P1_DRIVETRAIN.md) for the motor baseline;
 [`docs/P1_POWER.md`](docs/P1_POWER.md) for P1.2 current, driver and protection;
 [`docs/P1_CONTROL.md`](docs/P1_CONTROL.md) for the provisional P1.3 STM32 pin
-map and protocol; and [`docs/P1_MECHANICAL.md`](docs/P1_MECHANICAL.md) for the
-**open** P1.4 CAD gate. Every physical BOM row remains `HOLD`.
+map and protocol; [`docs/P1_MECHANICAL.md`](docs/P1_MECHANICAL.md) for the
+**open** P1.4 CAD gate; [`docs/P1_RELEASE.md`](docs/P1_RELEASE.md) for staged
+P1.5/P2 gates; and [portable MCU code](firmware/ar01_controller/README.md).
+Every physical BOM row remains `HOLD`.
 
 On a machine with Python 3, P1 sizing is independent of ROS:
 

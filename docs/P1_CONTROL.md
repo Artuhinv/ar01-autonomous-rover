@@ -1,8 +1,9 @@
 # P1.3 low-level controller and host contract
 
-Status: **development-board and interface baseline, not firmware validation or
-purchase release** (2026-09-29). The controller is deliberately independent of
-Gazebo and ROS: the host presents the existing `/cmd_vel`, `/odom`, and
+Status: **development-board baseline plus host-tested portable C core; STM32
+integration and purchase release open** (2026-09-29). The controller is
+deliberately independent of Gazebo and ROS: the host presents the existing
+`/cmd_vel`, `/odom`, and
 `/joint_states` contract; the MCU controls wheels and reports raw feedback.
 
 ## Development controller
@@ -73,7 +74,7 @@ motor datasheets. Windup protection and bounded PWM must be present. Current
 sense is a supporting diagnostic, not the sole stall detector: compare commanded
 motion with encoder delta and current, and fault on sustained mismatch.
 
-## Wire protocol v1 (design contract, not implemented firmware)
+## Wire protocol v1 (C/Python implementation, no MCU transport yet)
 
 Transport: 115200 baud, 8N1 over the Nucleo ST-LINK VCP during development.
 The VCP is connected by default to target **LPUART1 on PA2/PA3**; it is not
@@ -97,8 +98,10 @@ new session with `DISARM` then `ARM`, and MCU clears the accepted sequence at
 that boundary. This prevents a stale speed packet from arming motion.
 
 `hardware/protocol/ar01_link.py` is a Python reference encoder/decoder and
-test oracle for this frame definition. It is not running on the robot and does
-not replace firmware-side validation.
+test oracle for this frame definition. `firmware/ar01_controller/protocol/` now
+implements the same contract in C, with host interoperability tests. Neither
+is running on the robot: UART receive framing, error counters and MCU-side
+transport are still unimplemented.
 
 | Type | Direction | Payload | Meaning |
 | --- | --- | --- | --- |
@@ -120,12 +123,19 @@ wheel separation, odometry and TF, preserving the P0 interface contract.
 
 ## P1.3 exit checks
 
-This document closes **interface selection**, not control validation. Before
-the electrical design is released, provide an `.ioc` or equivalent checked pin
+This document closes **interface selection and portable host-code checks**, not
+STM32 or hardware control validation. The C core has host tests for protocol,
+encoder wrap, timeout, E-stop and jam fault transitions. The 200 ms timeout is
+implemented in the core, but the hardware 10 ms tick and independent watchdog
+are not. The C files compile to Cortex-M4 objects; no linked/flashed firmware
+is claimed. Before the electrical design is released, provide an `.ioc` or
+equivalent checked pin
 configuration and a schematic. Before motors are fitted to the chassis, verify
 two encoders, 20 kHz PWM, VCP framing/CRC, command timeout, each driver fault,
 E-stop with a dead MCU, current-sense calibration, and forward-sign convention
-on a current-limited bench supply. No firmware or bench result is claimed here.
+on a current-limited bench supply. No bench result is claimed here. See
+[`firmware/ar01_controller/README.md`](../firmware/ar01_controller/README.md)
+and [staged release](P1_RELEASE.md).
 
 Sources: [ST NUCLEO-G431RB](https://www.st.com/en/evaluation-tools/nucleo-g431rb.html),
 [UM2505 board manual](https://www.st.com/resource/en/user_manual/dm00556337.pdf),
