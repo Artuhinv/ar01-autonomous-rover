@@ -1,8 +1,8 @@
 # NUCLEO-G431RB board preflight
 
-Status: **document/static review only; CubeMX and board checks NOT PASS**
-(2026-09-29). This is a handoff for producing the P1.3B firmware image, not a
-wiring authorization.
+Historical P1 status (2026-09-29): **document/static review only**. P2 has
+since produced a buildable, motor-disabled MCU image; see [P2 bring-up](P2_BRINGUP.md).
+Physical board and reset-low checks remain open. This is not wiring authorization.
 
 ## Verified from official ST material
 
@@ -43,9 +43,6 @@ protection review in [P1_RELEASE](P1_RELEASE.md).
 
 ## Why this is still open on this computer
 
-STM32CubeMX and STM32CubeIDE are not installed here. ST's official download
-flow [requires a myST registration or contact form for some downloads](https://www.st.com/content/st_com/en/about/security-and-privacy/privacy-notices/stm32cube-data-collection-information.html); this
-work does not submit another person's identity or use a third-party binary.
-No `.ioc` was invented and no firmware ELF, flash or bench PASS is claimed.
-The portable service/port boundary in `firmware/ar01_controller/adapter/` can
-be integrated once the official tool and board package are available.
+This paragraph records the 2026-09-29 limitation. CubeMX 6.18.1 has since
+been installed and used; a real ARM ELF/BIN/HEX is now built. No flash or
+physical bench PASS is claimed. Current evidence is in [P2 bring-up](P2_BRINGUP.md).

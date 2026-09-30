@@ -1,6 +1,8 @@
 # P1.5 staged release and P2 handoff
 
 Status: **engineering-sample plan defined; no purchase released** (2026-09-29).
+P2.0 now has a motor-disabled ARM image, but the purchase gate remains closed;
+see [P2 bring-up](P2_BRINGUP.md). The table below is the historical P1 snapshot.
 This resolves a circular gate: motor/driver/MCU bench measurements cannot exist
 until a small set of engineering samples exists. It does **not** approve a full
 robot build, battery, chassis or custom PCB.

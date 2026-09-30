@@ -5,3 +5,7 @@ log/
 __pycache__/
 .vscode/
 .idea/
+firmware/ar01_controller/stm32/ar01_nucleo_g431rb/Drivers/
+firmware/ar01_controller/stm32/ar01_nucleo_g431rb/Makefile
+firmware/ar01_controller/stm32/ar01_nucleo_g431rb/.mxproject
+firmware/ar01_controller/stm32/ar01_nucleo_g431rb/ar01_nucleo_g431rb.ioc

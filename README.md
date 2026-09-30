@@ -2,11 +2,11 @@
 
 Frozen milestone: **P0 Digital AR-01 complete (steps 0-29)**.
 
-Current design work: **P1 physical engineering, not yet P2**. P1.1 motor and
-P1.2 driver are baselines; P1.3 portable C core passes host tests but lacks a
-flashable STM32 adapter; P1.4 wheel-size screening prefers a 100 mm design
-target but CAD is open; P1.5 staged sample/full-release rules are documented,
-with all purchases still on hold. See [P1 release status](docs/P1_RELEASE.md)
+Current work: **P2 physical bring-up has started**. P1 remains an engineering
+baseline with measured values still open. A P2.0 MCU-only STM32 image now
+builds to ELF/BIN/HEX, but has not been flashed or bench-tested and deliberately
+cannot ARM the drive. P1.4 CAD and all purchases remain on hold. See the
+[P2 bring-up record](docs/P2_BRINGUP.md) and [P1 release status](docs/P1_RELEASE.md)
 and the [hardware BOM](hardware/BOM.csv). The
 [NUCLEO board preflight](docs/P1_BOARD_PREFLIGHT.md) shows what is verified on
 paper and what still needs CubeMX and bench evidence.

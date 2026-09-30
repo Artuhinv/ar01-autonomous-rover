@@ -1,10 +1,10 @@
 # AR-01 controller firmware baseline
 
-This directory contains **portable C protocol, control-core and service code**,
-not a flashable STM32 application. It intentionally has no CubeMX-generated
-project, board startup code, peripheral HAL port or calibrated hardware
-constants. Do not wire motors or flash a board on the assumption that this is a
-complete safety controller.
+This directory contains portable C protocol, control-core and service code,
+plus a **buildable, motor-disabled P2.0 STM32 image** in `stm32/`. The image
+has CubeMX-generated startup/HAL initialization and a minimal UART/timer/encoder
+port; it is not a calibrated motor controller or a verified safety system.
+Do not connect motor power or treat this ELF as a release-to-drive image.
 
 `protocol/` implements the P1.3 COBS + CRC16-CCITT-FALSE serial frame contract.
 `control/` implements DISARMED/ARMED/FAULT transitions, 200 ms command timeout,
@@ -43,11 +43,8 @@ The three output binaries should be built outside the repository or deleted
 after testing. Cross-compiling these C files to Cortex-M4 **objects** verifies
 syntax/target compatibility only, not linking, timing or board operation.
 
-Before this can count as P1.3B completion, produce and review a CubeMX `.ioc`
-for the NUCLEO-G431RB pin map in `docs/P1_CONTROL.md`, generate a reproducible
-build, connect UART IRQ/DMA through a bounded RX queue to the tested frame
-parser, implement TIM2/TIM4 encoder capture, TIM1 PWM/direction outputs,
-drive-window ADC, E-stop/DIAG input conditioning and actual independent IWDG.
-Record reset cause,
-calibrate signs and all thresholds on a current-limited fixture, and verify
-fault behavior with scope and real hardware. None is claimed here.
+The checked-in `.ioc`, generated board sources and reproducible ARM build are
+documented in [P2 bring-up](../../docs/P2_BRINGUP.md). Remaining before any
+drive-enabled image: correct ADC sequencing/scaling, DIAG/E-stop conditioning,
+reset-cause reporting, calibrated encoder signs/current thresholds, connector
+schematic, external PWM pulldowns, and oscilloscope/bench verification.
