@@ -23,30 +23,49 @@ facts. No purchase, flash, motor connection or physical safety test is claimed.
   remain low. Reset pins are still high-impedance until firmware runs; external
   PWM pulldowns and independent E-stop torque removal are mandatory later.
 
-## Reproduce the build on Windows
+## Reproduce on another computer
 
-Install [STM32CubeMX 6.18.1](https://www.st.com/en/development-tools/stm32cubemx.html)
-for inspecting/regenerating the `.ioc`. Download the official
-[Arm GNU Toolchain 12.3.Rel1](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain)
-Windows `arm-none-eabi` ZIP and extract it. Obtain the official
-[STM32CubeG4 v1.6.3](https://github.com/STMicroelectronics/STM32CubeG4/tree/v1.6.3)
-package and its two required submodules:
+On Windows, install Git, open PowerShell and run:
 
 ```powershell
-git clone --depth 1 --branch v1.6.3 https://github.com/STMicroelectronics/STM32CubeG4.git C:\dev\STM32CubeG4
-git -C C:\dev\STM32CubeG4 submodule update --init --depth 1 Drivers/STM32G4xx_HAL_Driver Drivers/CMSIS/Device/ST/STM32G4xx
-python firmware/ar01_controller/stm32/verify_ioc.py
-.\firmware\ar01_controller\stm32\build.ps1 -ToolchainBin C:\tools\arm-gnu-toolchain-12.3.rel1-mingw-w64-i686-arm-none-eabi\bin -CubeG4Path C:\dev\STM32CubeG4
+git clone https://github.com/Artuhinv/ar01-autonomous-rover.git
+cd ar01-autonomous-rover
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\ar01_controller\stm32\bootstrap.ps1
 ```
 
-Replace the example paths with your own. The build does not depend on the
-current user's CubeMX cache or include a vendored 50+ MB HAL tree. Output is
+On Ubuntu 24.04 x86-64, ensure `git`, `curl`, `tar` and `python3` are available:
+
+```bash
+git clone https://github.com/Artuhinv/ar01-autonomous-rover.git
+cd ar01-autonomous-rover
+bash firmware/ar01_controller/stm32/bootstrap.sh
+```
+
+Both scripts download the pinned official
+[Arm GNU Toolchain 12.3.Rel1](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain)
+and [STM32CubeG4 v1.6.3](https://github.com/STMicroelectronics/STM32CubeG4/tree/v1.6.3)
+with its two required HAL/CMSIS submodules, verify the toolchain archive SHA-256
+and CubeG4 commit, and then build. Windows uses `%LOCALAPPDATA%\AR01-P2`;
+Linux uses `~/.cache/ar01-p2` unless `XDG_CACHE_HOME` is set. The downloads
+remain outside the repository. Running the command again reuses the cache.
+No administrator privileges or STM32CubeMX installation are needed **to build**.
+Install [STM32CubeMX 6.18.1](https://www.st.com/en/development-tools/stm32cubemx.html)
+only if you need to inspect or regenerate the `.ioc` and HAL initialization.
+
+The build does not depend on the original computer's files or include a
+vendored 50+ MB HAL tree. Output is
 `firmware/ar01_controller/stm32/ar01_nucleo_g431rb/build/` with `.elf`, `.hex`,
 `.bin` and `.map`; build artifacts are ignored by Git. Reopening the `.ioc` in
 CubeMX may require selecting the local G4 firmware package again. Preserve
 the `USER CODE` calls in generated `main.c` when regenerating. CubeMX's
 generated Windows Makefile contained duplicated absolute source paths here,
-so `build.ps1` is the checked build route.
+so the repository build scripts are authoritative.
+
+To run just the pin/clock guard, use `python` on Windows or `python3` on Linux
+with `firmware/ar01_controller/stm32/verify_ioc.py`. To use existing local
+dependencies rather than downloading, pass `-ToolchainBin` and `-CubeG4Path`
+to `bootstrap.ps1`, or set `AR01_TOOLCHAIN_BIN` and `AR01_CUBEG4_PATH` before
+`bootstrap.sh`. Neither script flashes hardware or enables motor drive.
 
 ## Evidence on this computer
 
@@ -57,12 +76,16 @@ so `build.ps1` is the checked build route.
 | Static `.ioc` guard | 20 assigned pins, 20 kHz TIM1, 100 Hz TIM6, TI12 encoder modes: PASS |
 | Arm GNU 12.3.1 cross-build | ELF/BIN/HEX created; 19,192 B text, 12 B data, 2,824 B BSS |
 | Fresh Git clone + external CubeG4 | Same image builds without ignored local HAL files: PASS |
+| Windows bootstrap | Sparse CubeG4 clone and verified Arm archive extraction: PASS |
+| Ubuntu 24.04 x86-64 bootstrap | Verified Arm archive, sparse CubeG4 clone and ARM build: PASS |
 | Linked portable functions | `ar01_core_command`, `ar01_service_tick`, COBS/CRC and IRQ handlers present |
 | Host regression | Core, service, C/Python protocol interoperability: PASS |
 | ST-LINK flash / VCP / GPIO waveform | NOT RUN: board not available |
 
 The linker emits the normal `nosys.specs` warnings for unused console/file
-syscalls. There are no build errors. The static guard is not a substitute for
+syscalls. There are no build errors. Windows and Linux outputs have the same
+memory footprint but are not byte-for-byte identical; compare behavior on
+hardware, not a cross-host binary hash. The static guard is not a substitute for
 CubeMX visual conflict review or a measured pin-level reset test.
 
 ## Next gates — still closed

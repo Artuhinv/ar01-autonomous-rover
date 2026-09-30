@@ -25,6 +25,12 @@ P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 EKF, SLAM, Nav2, autonomous behavior and physical hardware are intentionally
 outside P0.
 
+On a different computer, clone this repository from
+[GitHub](https://github.com/Artuhinv/ar01-autonomous-rover) and follow
+[P0 setup](docs/SETUP.md) for ROS simulation or
+[P2 bring-up](docs/P2_BRINGUP.md) for the STM32 firmware. No source files
+from the original computer are required.
+
 For a new Ubuntu 24.04 computer, follow the complete
 [clean-machine setup guide](docs/SETUP.md) before using the commands below.
 
