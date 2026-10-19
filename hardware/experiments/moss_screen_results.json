@@ -1,0 +1,53 @@
+{
+  "kind": "analytical screening, NOT Gazebo results",
+  "cases": {
+    "P0_3kg": {
+      "mass_kg": 3.0,
+      "cog_m": [
+        -0.020916666666666667,
+        0.0,
+        0.09625
+      ],
+      "static_edge_margin_mm": 20.916666666666668,
+      "worst_load_shift_mm": 13.345231334479625,
+      "worst_edge_margin_mm": 7.571435332187043,
+      "inside_under_assumptions": true
+    },
+    "hypothesis_1kg_high_front": {
+      "mass_kg": 4.0,
+      "cog_m": [
+        0.0018125000000000016,
+        0.0,
+        0.1346875
+      ],
+      "static_edge_margin_mm": -1.8125000000000016,
+      "worst_load_shift_mm": 18.674658133638694,
+      "worst_edge_margin_mm": -20.487158133638697,
+      "inside_under_assumptions": false
+    },
+    "hypothesis_1kg_low_rear": {
+      "mass_kg": 4.0,
+      "cog_m": [
+        -0.0331875,
+        0.0,
+        0.0834375
+      ],
+      "static_edge_margin_mm": 33.1875,
+      "worst_load_shift_mm": 11.568755734759934,
+      "worst_edge_margin_mm": 21.618744265240068,
+      "inside_under_assumptions": true
+    }
+  },
+  "timeout_comparison_same_assumptions": {
+    "speed_m_s": 0.6,
+    "assumed_braking_m_s2": 0.5,
+    "timeout_500ms_stop_m": 0.6599999999999999,
+    "timeout_200ms_stop_m": 0.48
+  },
+  "limits": [
+    "Point contact support triangle; flat rigid chassis.",
+    "No tyre contact, obstacle, traction or dynamic tip validation.",
+    "Payload locations and braking are hypothetical.",
+    "JGB37-520 torque-speed and encoder calibration remain unknown."
+  ]
+}

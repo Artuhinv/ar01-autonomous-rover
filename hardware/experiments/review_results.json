@@ -1,0 +1,11 @@
+{
+  "moss_mujoco_missions": "3/3 PASS; recorded actions, fresh physics; no API",
+  "moss_unittest": "23/23 PASS",
+  "moss_control_cpp": "PASS",
+  "ar01_calculations": "6/6 PASS",
+  "ar01_python_protocol": "5/5 PASS",
+  "ar01_c_core": "PASS",
+  "ar01_c_service": "PASS",
+  "ar01_c_python_interop": "55 valid + CRC fault PASS",
+  "ar01_gazebo": "NOT RUN: ROS/Gazebo absent"
+}
