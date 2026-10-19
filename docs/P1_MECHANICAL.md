@@ -56,6 +56,12 @@ payload and test its projection against the three-contact support triangle,
 including acceleration and slope cases. A static center point alone is not a
 tip-stability test.
 
+The P0 snapshot now has a reproducible
+[mass-placement and stopping-distance screen](P2_LAYOUT_CHECK.md). It checks
+the mass/position snapshot against Xacro and demonstrates why a high front
+payload needs a new layout review. These numerical examples do not assign
+the unmeasured physical battery or ballast a mass or mounting coordinate.
+
 ## CAD completion gate
 
 1. Import the manufacturer STEP for **the encoder-equipped 37D motor** and the

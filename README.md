@@ -12,6 +12,8 @@ and the [hardware BOM](hardware/BOM.csv). The
 paper and what still needs CubeMX and bench evidence.
 The [architecture decision register](docs/ARCHITECTURE_DECISIONS.md) separates
 stable safety/interface properties from revisable part and technology baselines.
+The [mass-placement and stopping-distance check](docs/P2_LAYOUT_CHECK.md)
+adds reproducible layout calculations and measured-data requirements for P2.
 
 P0 provides a reproducible ROS 2 Jazzy + Gazebo Harmonic digital prototype:
 

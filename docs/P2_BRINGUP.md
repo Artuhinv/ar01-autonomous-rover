@@ -106,3 +106,8 @@ CubeMX visual conflict review or a measured pin-level reset test.
 P2.3–P2.8 cannot be closed by compilation or simulation: they require real
 parts, metrology and signed-off safety evidence. Do not infer calibrated PID,
 encoder counts/rev, current limits or E-stop behavior from this image.
+
+For the rolling chassis, use the
+[AR-01 mass-placement and stopping-distance check](P2_LAYOUT_CHECK.md) when
+actual component masses and mounting coordinates become available. It also
+records fit-coupon, service-access and encoder-calibration work for the bench.
